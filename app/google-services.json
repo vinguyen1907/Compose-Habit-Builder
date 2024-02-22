@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "798524689577",
+    "project_id": "monumental-40d17",
+    "storage_bucket": "monumental-40d17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798524689577:android:0f6675f70f42a173742db8",
+        "android_client_info": {
+          "package_name": "com.example.monumental"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798524689577-cvp01252a3rn0s87qfgsc2sto04kbh4a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.monumental",
+            "certificate_hash": "d510d7757c854341e5c5afab1e7c330c40b1b354"
+          }
+        },
+        {
+          "client_id": "798524689577-u1psqdtt200fdmhrt7bjf53tb5sltl34.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8bLkR8HVr9CYOUSPjJXoLwCE1lrv4zBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "798524689577-u1psqdtt200fdmhrt7bjf53tb5sltl34.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <!--    Custom colors     -->
+    <color name="primary_bg_color">#FFFFF3E9</color>
+    <color name="secondary_bg_color">#FFFFF6ED</color>
+    <color name="primary_color">#FFFDA758</color>
+    <color name="primary_color_20">#33FDA758</color>
+    <color name="sunset">#FFF65B4E</color>
+    <color name="orange">#FFFC9D45</color>
+    <color name="orange_20">#33FC9D45</color>
+    <color name="twilight">#FF29329F</color>
+    <color name="eclipse">#FF573353</color>
+    <color name="eclipse_50">#80573353</color>
+    <color name="eclipse_10">#1A573353</color>
+    <color name="fab_shadow_color">#FFD07E32</color>
+</resources>
