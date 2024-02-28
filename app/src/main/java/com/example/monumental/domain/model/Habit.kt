@@ -15,7 +15,7 @@ data class Habit(
 //    val description: String,
 //    val icon: String,
     val color: HabitColor,
-    val frequency: Frequency,
+    var frequencyData: FrequencyData?,
     val notification: Boolean,
     @get: PropertyName("reminderString")
     val reminder: LocalTime,
@@ -29,7 +29,7 @@ data class Habit(
     constructor() : this(
         title = "",
         color = HabitColor.ORANGE,
-        frequency = Frequency.DAILY,
+        frequencyData = null,
         notification = false,
         reminder = LocalTime.now(),
         goal = 0,

@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -23,7 +22,6 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePickerState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,15 +54,27 @@ import com.example.monumental.presentation.screens.sign_in.components.LoadingScr
 import com.example.monumental.ui.theme.MonumentalTheme
 import com.example.monumental.utils.Dimens.PageHorizontalPadding
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun AddHabitScreen(
     viewModel: AddHabitViewModel = hiltViewModel(),
     onBack: () -> Unit,
 ) {
+    AddHabitScreen(
+        state = viewModel.state,
+        onEvent = { viewModel.onEvent(it) },
+        onBack = onBack
+    )
+}
 
-    val state = viewModel.state
-    val onEvent = viewModel::onEvent
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddHabitScreen(
+    state: AddHabitUiState,
+    onEvent: (AddHabitEvent) -> Unit,
+    onBack: () -> Unit,
+) {
+
     var enteringGoal by remember { mutableStateOf(false) }
     var selectingFrequency by remember { mutableStateOf(false) }
     var changingReminder by remember { mutableStateOf(false) }
@@ -87,8 +97,7 @@ fun AddHabitScreen(
         floatingActionButton = {
             FAB(
                 onAddHabit = {
-                    onEvent(AddHabitEvent.AddHabit)
-                    onBack()
+                    onEvent(AddHabitEvent.AddHabit(onBack))
                 }
             )
         }
@@ -112,7 +121,7 @@ fun AddHabitScreen(
                         .padding(horizontal = PageHorizontalPadding, vertical = 8.dp),
                     value = state.name,
                     onValueChange = {
-                        viewModel.onEvent(AddHabitEvent.ChangeName(it))
+                        onEvent(AddHabitEvent.ChangeName(it))
                     },
                     placeholder = {
                         Text(
@@ -171,7 +180,7 @@ fun AddHabitScreen(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                state.frequency.toReadableString(),
+                                state.frequencyData.frequency.toReadableString(),
                                 style = MaterialTheme.typography.titleMedium
                             )
                             TextButton(onClick = { selectingFrequency = !selectingFrequency }) {
@@ -258,7 +267,7 @@ fun AddHabitScreen(
                             }
                         ) {
                             Text(
-                                viewModel.getGoalInString(),
+                                state.goalInString,
                                 style = MaterialTheme.typography.titleMedium,
                                 color = colorResource(id = R.color.primary_color)
                             )
@@ -298,7 +307,11 @@ fun AddHabitScreen(
                             changingReminder = true
                         }) {
                             Text(
-                                String.format("%02d:%02d", state.reminder.hour, state.reminder.minute),
+                                String.format(
+                                    "%02d:%02d",
+                                    state.reminder.hour,
+                                    state.reminder.minute
+                                ),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = colorResource(id = R.color.primary_color)
                             )
@@ -414,36 +427,30 @@ fun AddHabitScreen(
     }
 
     if (selectingFrequency) {
-        ModalBottomSheet(
-            containerColor = colorResource(id = R.color.white),
-            sheetState = rememberModalBottomSheetState(),
-            dragHandle = {},
-            shape = MaterialTheme.shapes.medium,
+        SelectFrequencyBottomSheet(
+            modifier = Modifier.padding(bottom = 20.dp),
+            currentFrequencyData = state.frequencyData,
+            onSaveFrequency = { frequency, days ->
+                onEvent(AddHabitEvent.ChangeFrequency(frequency))
+                selectingFrequency = false
+            },
             onDismissRequest = {
                 selectingFrequency = false
-            }) {
-            SelectFrequencyBottomSheet(
-                modifier = Modifier.padding(bottom = 20.dp),
-                currentFrequency = state.frequency,
-                onSaveFrequency = { frequency, days ->
-                    onEvent(AddHabitEvent.ChangeFrequency(frequency))
-                    selectingFrequency = false
-                },
-                onDismissRequest = {
-                    selectingFrequency = false
-                }
-            )
-        }
+            }
+        )
     }
 
     val timePickerState by remember { mutableStateOf(TimePickerState(0, 0, true)) }
     if (changingReminder) {
         SetReminderDialog(state = timePickerState,
-            onDismissRequest = {
-                changingReminder = false
-            },
+            onDismissRequest = { changingReminder = false },
             onSave = {
-                onEvent(AddHabitEvent.ChangeReminder(hour = timePickerState.hour, minute = timePickerState.minute))
+                onEvent(
+                    AddHabitEvent.ChangeReminder(
+                        hour = timePickerState.hour,
+                        minute = timePickerState.minute
+                    )
+                )
                 changingReminder = false
             }
         )
@@ -461,6 +468,8 @@ fun AddHabitScreen(
 fun AddHabitScreenPrev() {
     MonumentalTheme {
         AddHabitScreen(
+            state = AddHabitUiState(),
+            onEvent = {},
             onBack = {}
         )
     }

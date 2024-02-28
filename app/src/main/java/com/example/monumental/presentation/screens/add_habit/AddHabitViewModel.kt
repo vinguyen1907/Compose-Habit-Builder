@@ -5,14 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.monumental.domain.model.GoalModel
 import com.example.monumental.domain.model.Habit
 import com.example.monumental.domain.usecases.habits.HabitUseCases
 import com.example.monumental.presentation.validators.ValidationResult
 import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
 
@@ -33,7 +31,7 @@ class AddHabitViewModel @Inject constructor(
 
             is AddHabitEvent.ChangeFrequency -> {
                 state = state.copy(
-                    frequency = event.frequency
+                    frequencyData = event.frequency
                 )
             }
 
@@ -70,17 +68,10 @@ class AddHabitViewModel @Inject constructor(
                     viewModelScope.launch {
                         addHabit()
                     }
+                    event.onBack()
                 }
             }
         }
-    }
-
-    fun getGoalInString(): String {
-        val hours = state.goal / 60
-        val minutes = state.goal % 60
-        val hoursText = if (hours == 0) "" else "${hours}h "
-        val minutesText = if (hours == 0) "$minutes mins" else "${minutes}m"
-        return "$hoursText$minutesText"
     }
 
     private fun validate(): Boolean {
@@ -99,7 +90,7 @@ class AddHabitViewModel @Inject constructor(
             title = state.name,
             color = state.color,
             completed = false,
-            frequency = state.frequency,
+            frequencyData = state.frequencyData,
             notification = state.notification,
             goal = state.goal,
             reminder = state.reminder,

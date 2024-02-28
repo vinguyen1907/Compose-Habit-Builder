@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.monumental.data.data_source.quotesList
+import com.example.monumental.domain.model.FrequencyData
 import com.example.monumental.domain.model.Habit
 import com.example.monumental.domain.usecases.habits.HabitUseCases
 import com.google.firebase.firestore.DocumentChange
@@ -50,6 +51,8 @@ class HomeViewModel @Inject constructor(
 
                     docChanges?.forEach { docChange ->
                         val habit = docChange.document.toObject<Habit>()
+                        val frequencyData = FrequencyData.fromObject(docChange.document.get("frequencyData"))
+                        habit.frequencyData = frequencyData
                         when (docChange.type) {
                             DocumentChange.Type.ADDED -> {
                                 newHabits.add(0, habit)

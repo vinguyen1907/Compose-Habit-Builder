@@ -10,13 +10,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -39,24 +36,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.monumental.R
 import com.example.monumental.constants.enums.Frequency
 import com.example.monumental.constants.enums.HabitColor
 import com.example.monumental.constants.enums.getColor
 import com.example.monumental.constants.enums.toReadableShortString
+import com.example.monumental.domain.model.DailyFrequencyData
 import com.example.monumental.domain.model.Habit
 import com.example.monumental.presentation.common.PrimaryCustomAppBar
 import com.example.monumental.presentation.common.PrimaryIconButton
-import com.example.monumental.presentation.screens.home.components.HabitItem
 import com.example.monumental.ui.theme.MonumentalTheme
 import com.example.monumental.utils.Dimens.PageHorizontalPadding
 import com.google.firebase.Timestamp
 import java.time.DayOfWeek
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.YearMonth
@@ -70,7 +64,7 @@ fun HabitDetailsScreen(
         id = "1",
         title = "Drink water",
         color = HabitColor.ORANGE,
-        frequency = Frequency.DAILY,
+        frequencyData = DailyFrequencyData(),
         notification = true,
         reminder = LocalTime.of(12, 0),
         goal = 8,
@@ -151,7 +145,7 @@ fun HabitDetailsScreen(
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             Text(
-                                "Repeat ${habit.frequency}",
+                                "Repeat ${habit.frequencyData?.frequency}",
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.Medium,
                                 ),

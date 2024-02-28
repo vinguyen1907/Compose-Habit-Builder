@@ -41,7 +41,7 @@ fun SetReminderDialog(
             .padding(vertical = Dimens.PageHorizontalPadding)
             .wrapContentWidth()
             .wrapContentHeight(),
-        onDismissRequest = { /*TODO*/ }
+        onDismissRequest = onDismissRequest
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
